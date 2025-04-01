@@ -2,6 +2,8 @@
 
 This project is a Flutter application called **Pokedex**, which allows users to explore and filter Pokémon by region, as well as view the details of each Pokémon.
 
+https://github.com/user-attachments/assets/8c3c667e-cf5d-46a3-9a92-c27b0495a93c
+
 ## Features
 
 - Complete list of Pokémon.
@@ -18,7 +20,7 @@ This project is a Flutter application called **Pokedex**, which allows users to 
 
 1. Clone this repository:
     ```bash
-    git clone 
+    git clone https://github.com/RichardM20/pkm-dex
     ```
 2. Navigate to the project directory:
     ```bash
@@ -32,10 +34,6 @@ This project is a Flutter application called **Pokedex**, which allows users to 
     ```bash
     flutter run
     ```
-
-## Screenshots
-
-
 
 ## Contributions
 
