@@ -36,7 +36,7 @@ class PokeAppbar extends ConsumerWidget implements PreferredSizeWidget {
             ),
           ),
           Text(
-            'Pokedex',
+            'PKM Dex',
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w600,
               color: Colors.white,
