@@ -1,4 +1,4 @@
-# Pokedex (PokeApi)
+# PKM Dex
 
 This project is a Flutter application called **Pokedex**, which allows users to explore and filter Pokémon by region, as well as view the details of each Pokémon.
 

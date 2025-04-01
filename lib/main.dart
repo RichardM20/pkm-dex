@@ -13,7 +13,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final theme = ref.watch(themeProvider);
     return MaterialApp(
-      title: 'Pokedex (PokeApi)',
+      title: 'PKM Dex',
       debugShowCheckedModeBanner: false,
       theme: theme,
       initialRoute: Routes.initialRoute,
