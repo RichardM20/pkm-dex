@@ -13,7 +13,7 @@ import 'package:poke_api/src/views/home/widgets/poke_card/poke_card.dart';
 import 'package:poke_api/src/views/home/widgets/poke_list.dart';
 import 'package:poke_api/src/views/widgets/poke_error_data.dart';
 
-import 'pokemon_home.test.mocks.dart';
+import 'pokemon_home_test.mocks.dart';
 
 @GenerateMocks([PokeApi])
 void main() {

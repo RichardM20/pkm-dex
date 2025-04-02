@@ -8,7 +8,7 @@ import 'package:poke_api/src/models/pokemon_detail_model.dart';
 import 'package:poke_api/src/models/pokemon_model.dart';
 import 'package:poke_api/src/models/pokemon_move_details.dart';
 
-import '../homeController/home_controller.test.mocks.dart';
+import '../homeController/home_controller_test.mocks.dart';
 
 void main() {
   final String url = 'https://pokeapi.co/api/v2/move';

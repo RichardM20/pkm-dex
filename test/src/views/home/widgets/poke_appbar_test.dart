@@ -9,7 +9,7 @@ import 'package:poke_api/src/views/home/widgets/poke_appbar.dart';
 import 'package:poke_api/src/views/widgets/poke_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'poke_appbar.test.mocks.dart';
+import 'poke_appbar_test.mocks.dart';
 
 @GenerateMocks([ThemeNotifier])
 void main() {

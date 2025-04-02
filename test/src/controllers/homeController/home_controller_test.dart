@@ -8,7 +8,7 @@ import 'package:poke_api/src/models/pokemon_model.dart';
 import 'package:poke_api/src/services/poke_api.dart';
 import 'package:poke_api/src/utils/pkm_generation.dart';
 
-import 'home_controller.test.mocks.dart';
+import 'home_controller_test.mocks.dart';
 
 @GenerateMocks([PokeApi])
 void main() {
