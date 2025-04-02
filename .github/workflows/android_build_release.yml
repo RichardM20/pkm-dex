@@ -37,9 +37,12 @@ jobs:
         flutter-version: '3.29.0' # replace with fv
     - run: flutter pub get
     - run: flutter build apk --release
-
-    outputs:
-      apk_path: build/app/outputs/flutter-apk/app-release.apk
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
+        retention-days: 1
 
   release:
     name: Create Release
@@ -48,19 +51,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Obtener versión de la aplicación
+    - name: Get version from pubspec.yaml
       id: get_version
       run: |
         VERSION=$(grep "version:" pubspec.yaml | awk '{print $2}')
-        echo "::set-output name=app_version::$VERSION"
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+    - name: Download APK from build
+      uses: actions/download-artifact@v3
+      with:
+        name: release-apk
+        path: apk
     - name: 'Upload apk to GitHub'
       uses: ncipollo/release-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: ${{ jobs.build.outputs.apk_path }}
+        artifacts: "apk/app-release.apk"
         prerelease: false
-        tag_name: v${{ steps.get_version.outputs.app_version }}
-        name: Release v${{ steps.get_version.outputs.app_version }}
+        tag_name: v${{ steps.get_version.outputs.version }}
+        name: Release v${{ steps.get_version.outputs.version }}
         body: |
           Automatically generated release by GitHub Actions.
-                Application version: ${{ steps.get_version.outputs.app_version }}
+          Application version: ${{ steps.get_version.outputs.version }}
