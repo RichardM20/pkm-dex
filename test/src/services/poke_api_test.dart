@@ -2,10 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/testing.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:poke_api/src/models/pokemon_detail_model.dart';
+import 'package:poke_api/src/models/pokemon_model.dart';
+import 'package:poke_api/src/models/pokemon_move_details.dart';
 import 'package:poke_api/src/services/poke_api.dart';
+
+import 'poke_api_test.mocks.dart';
 
 @GenerateMocks([http.Client])
 void main() {
@@ -14,7 +18,7 @@ void main() {
   late MockClient mockClient;
 
   setUp(() {
-    mockClient = MockClient((request) async => http.Response('{}', 200));
+    mockClient = MockClient();
     pokeApi = PokeApi();
   });
 
@@ -44,6 +48,7 @@ void main() {
 
       final pokemon = await pokeApi.getPokemon(pokemonId: pokemonId);
       expect(pokemon, isNotNull);
+      expect(pokemon, isA<Pokemon>());
       expect(pokemon!.name, equals('bulbasaur'));
     });
 
@@ -64,6 +69,7 @@ void main() {
 
       final details = await pokeApi.getPokemonDetails(pkmName: pokemonName);
       expect(details, isNotNull);
+      expect(details, isA<PkmDetails>());
       expect(details!.name, equals('bulbasaur'));
     });
 
@@ -81,6 +87,7 @@ void main() {
 
       final moveDetails = await pokeApi.getMoveDetails(url: moveUrl);
       expect(moveDetails, isNotNull);
+      expect(moveDetails, isA<PkmMoveDetails>());
       expect(moveDetails!.name, equals('pound'));
     });
   });
