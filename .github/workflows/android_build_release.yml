@@ -76,5 +76,6 @@ jobs:
         tag: v${{ steps.get_version.outputs.version }}
         name: Release v${{ steps.get_version.outputs.version }}
         body: |
-          Automatically generated release by GitHub Actions.
+          Automatically generated release by GitHub Actions
           Application version: ${{ steps.get_version.outputs.version }}
+          > Future improvement: Extract release data from README.md
