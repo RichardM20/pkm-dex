@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:poke_api/src/controllers/detailCotroller/detail_pkm_controller.dart';
 import 'package:poke_api/src/controllers/detailCotroller/detail_pkm_controller_state.dart';
@@ -7,9 +8,11 @@ import 'package:poke_api/src/controllers/homeController/home_controller.dart';
 import 'package:poke_api/src/models/pokemon_detail_model.dart';
 import 'package:poke_api/src/models/pokemon_model.dart';
 import 'package:poke_api/src/models/pokemon_move_details.dart';
+import 'package:poke_api/src/services/poke_api.dart';
 
 import 'detail_controller_test.mocks.dart';
 
+@GenerateMocks([PokeApi])
 void main() {
   final String url = 'https://pokeapi.co/api/v2/move';
 
