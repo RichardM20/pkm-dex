@@ -42,3 +42,7 @@ Contributions are welcome. Please open an issue or a pull request to discuss any
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Note
+
+Currently, actions are triggered on every commit, but this is only for testing purposes in this project. Ideally, this should be adjusted to fit the desired workflow.
