@@ -35,26 +35,22 @@ class PokeList extends ConsumerWidget {
     final pokemons = homeState.pokemons[homeState.currentGeneration] ?? [];
     final itemCount = isLoading ? homeState.requestCompleted : pokemons.length;
 
-    return Stack(
-      children: [
-        GridView.builder(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppSizes.x3,
-            vertical: AppSizes.x2,
-          ),
-          itemCount: itemCount,
-          gridDelegate: _buildGridDelegate(isLoading, context),
-          itemBuilder: (_, index) {
-            if (index >= pokemons.length) {
-              return Skeleton(
-                showSkeleton: isLoading,
-                child: SizedBox(height: 185, width: 185),
-              );
-            }
-            return PokeCard(pokemon: pokemons[index]);
-          },
-        ),
-      ],
+    return GridView.builder(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSizes.x3,
+        vertical: AppSizes.x2,
+      ),
+      itemCount: itemCount,
+      gridDelegate: _buildGridDelegate(isLoading, context),
+      itemBuilder: (_, index) {
+        if (index >= pokemons.length) {
+          return Skeleton(
+            showSkeleton: isLoading,
+            child: SizedBox(height: 185, width: 185),
+          );
+        }
+        return PokeCard(pokemon: pokemons[index]);
+      },
     );
   }
 }
