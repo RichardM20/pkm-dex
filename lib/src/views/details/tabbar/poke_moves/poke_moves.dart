@@ -3,6 +3,7 @@ import 'package:poke_api/src/controllers/detailCotroller/detail_pkm_controller.d
 import 'package:poke_api/src/views/details/tabbar/poke_moves/widgets/poke_move_details.dart';
 import 'package:poke_api/src/views/details/tabbar/poke_moves/widgets/table/poke_moves_table.dart';
 import 'package:poke_api/src/views/exports.dart';
+import 'package:poke_api/src/views/widgets/twen_animaiton.dart';
 
 class PokeMovesContent extends ConsumerWidget {
   const PokeMovesContent({super.key});
@@ -60,13 +61,19 @@ class PokeMovesContent extends ConsumerWidget {
     final pokemon = ref.watch(detailPkmProvider).pokemonDetails;
     final pkmMoves = pokemon?.moveDetails;
 
-    return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(horizontal: AppSizes.x2),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        layoutBuilder: _animatedLayoutBuilder,
-        child:
-            pkmMoves == null ? _buildPokeTableMoves(ref) : const MoveDetails(),
+    return TwenAnimationType(
+      direction: AnimationDirection.up,
+      type: AnimationType.translate,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.x2),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          layoutBuilder: _animatedLayoutBuilder,
+          child:
+              pkmMoves == null
+                  ? _buildPokeTableMoves(ref)
+                  : const MoveDetails(),
+        ),
       ),
     );
   }

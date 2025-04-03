@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:poke_api/src/config/api/poke_env.dart';
 import 'package:poke_api/src/controllers/detailCotroller/detail_pkm_controller.dart';
 import 'package:poke_api/src/controllers/detailCotroller/detail_pkm_controller_state.dart';
 import 'package:poke_api/src/controllers/homeController/home_controller.dart';
@@ -14,8 +15,6 @@ import 'detail_controller_test.mocks.dart';
 
 @GenerateMocks([PokeApi])
 void main() {
-  final String url = 'https://pokeapi.co/api/v2/move';
-
   late MockPokeApi mockPokeApi;
   late DetailPkmController detailPkmController;
   late ProviderContainer container;
@@ -156,7 +155,7 @@ void main() {
           ],
         );
 
-        final moveUrl = '$url/1/';
+        final moveUrl = '${PokeEnv.pokemonMove}/1/';
 
         when(
           mockPokeApi.getMoveDetails(url: moveUrl),
@@ -176,7 +175,7 @@ void main() {
     );
 
     test('getPkmMoveDetails should handle errors correctly', () async {
-      final moveUrl = '$url/999/';
+      final moveUrl = '${PokeEnv.pokemonMove}/999/';
 
       when(
         mockPokeApi.getMoveDetails(url: moveUrl),

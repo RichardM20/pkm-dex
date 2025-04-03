@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:poke_api/src/config/api/poke_env.dart';
 import 'package:poke_api/src/models/pokemon_detail_model.dart';
 import 'package:poke_api/src/models/pokemon_model.dart';
 import 'package:poke_api/src/models/pokemon_move_details.dart';
@@ -13,7 +14,6 @@ import 'poke_api_test.mocks.dart';
 
 @GenerateMocks([http.Client])
 void main() {
-  const String baseUrl = 'https://pokeapi.co/api/v2';
   late PokeApi pokeApi;
   late MockClient mockClient;
 
@@ -44,7 +44,7 @@ void main() {
         ],
       });
 
-      mockHttpResponse('$baseUrl/pokemon/$pokemonId', 200, response);
+      mockHttpResponse('${PokeEnv.pokemon}/$pokemonId', 200, response);
 
       final pokemon = await pokeApi.getPokemon(pokemonId: pokemonId);
       expect(pokemon, isNotNull);
@@ -65,7 +65,7 @@ void main() {
         ],
       });
 
-      mockHttpResponse('$baseUrl/pokemon-species/$pokemonName', 200, response);
+      mockHttpResponse('${PokeEnv.pokemonSpecies}/$pokemonName', 200, response);
 
       final details = await pokeApi.getPokemonDetails(pkmName: pokemonName);
       expect(details, isNotNull);
@@ -74,7 +74,7 @@ void main() {
     });
 
     test('returns move details when the response is 200', () async {
-      const moveUrl = '$baseUrl/move/1/';
+      const moveUrl = '${PokeEnv.pokemonMove}/1/';
       final response = jsonEncode({
         "id": 1,
         "name": "pound",
@@ -100,22 +100,22 @@ void main() {
 
     test('returns null when Pokémon is not found (404)', () {
       testErrorCase(
-        '$baseUrl/pokemon/99999',
+        '${PokeEnv.pokemon}/99999',
         () => pokeApi.getPokemon(pokemonId: 99999),
       );
     });
 
     test('returns null when Pokémon details are not found (404)', () {
       testErrorCase(
-        '$baseUrl/pokemon-species/nonexistent',
+        '${PokeEnv.pokemonSpecies}/nonexistent',
         () => pokeApi.getPokemonDetails(pkmName: 'nonexistent'),
       );
     });
 
     test('returns null when move details are not found (404)', () {
       testErrorCase(
-        '$baseUrl/move/99999/',
-        () => pokeApi.getMoveDetails(url: '$baseUrl/move/99999/'),
+        '${PokeEnv.pokemonMove}/99999/',
+        () => pokeApi.getMoveDetails(url: '${PokeEnv.pokemonMove}/99999/'),
       );
     });
   });

@@ -3,8 +3,8 @@ import 'package:poke_api/src/controllers/detailCotroller/detail_pkm_controller.d
 import 'package:poke_api/src/utils/pkm_stats.dart';
 import 'package:poke_api/src/utils/text_mejora_formats.dart';
 import 'package:poke_api/src/views/exports.dart';
-import 'package:poke_api/src/views/widgets/Skeleton/skeleton.dart';
 import 'package:poke_api/src/views/widgets/linear_indicator.dart';
+import 'package:poke_api/src/views/widgets/twen_animaiton.dart';
 
 import '../../../../models/pokemon_model.dart';
 
@@ -16,8 +16,9 @@ class PokeStatsIndicator extends ConsumerWidget {
     final state = ref.watch(detailPkmProvider);
     final stat = state.pokemonDetails?.pkmExtraData?.stats;
 
-    return Skeleton(
-      showSkeleton: state.isLoading,
+    return TwenAnimationType(
+      type: AnimationType.scale,
+      value: 0.9,
       child: Container(
         padding: EdgeInsets.all(AppSizes.x4),
         child: Column(

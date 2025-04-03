@@ -3,8 +3,8 @@ import 'package:poke_api/src/config/theme/spacing.dart';
 import 'package:poke_api/src/controllers/homeController/home_controller.dart';
 import 'package:poke_api/src/views/exports.dart';
 import 'package:poke_api/src/views/home/widgets/poke_card/poke_card.dart';
-import 'package:poke_api/src/views/widgets/Skeleton/skeleton.dart';
 import 'package:poke_api/src/views/widgets/poke_error_data.dart';
+import 'package:poke_api/src/views/widgets/twen_animaiton.dart';
 
 class PokeList extends ConsumerWidget {
   const PokeList({super.key});
@@ -44,12 +44,12 @@ class PokeList extends ConsumerWidget {
       gridDelegate: _buildGridDelegate(isLoading, context),
       itemBuilder: (_, index) {
         if (index >= pokemons.length) {
-          return Skeleton(
-            showSkeleton: isLoading,
-            child: SizedBox(height: 185, width: 185),
-          );
+          return SizedBox.shrink();
         }
-        return PokeCard(pokemon: pokemons[index]);
+        return TwenAnimationType(
+          type: AnimationType.fade,
+          child: PokeCard(pokemon: pokemons[index]),
+        );
       },
     );
   }

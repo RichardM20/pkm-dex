@@ -5,6 +5,7 @@ String getSprite({Sprites? sprites, bool? animated}) {
 
   if (animated == true) {
     return sprites.versions?.generationV?.blackWhite?.animated?.frontDefault ??
+        sprites.other?.dreamWorld?.frontDefault ??
         sprites.frontDefault ??
         '';
   }

@@ -1,6 +1,7 @@
 import 'package:poke_api/src/config/theme/theme.dart';
 import 'package:poke_api/src/views/exports.dart';
 import 'package:poke_api/src/views/widgets/poke_image.dart';
+import 'package:poke_api/src/views/widgets/twen_animaiton.dart';
 
 class PokeAppbar extends ConsumerWidget implements PreferredSizeWidget {
   @override
@@ -45,16 +46,20 @@ class PokeAppbar extends ConsumerWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
-        Switch.adaptive(
-          value: context.isDarkMode,
-          activeColor: Colors.white,
-          inactiveThumbColor: Colors.white,
-          activeTrackColor: Colors.red,
-          trackOutlineColor: WidgetStatePropertyAll(Colors.transparent),
-          onChanged: (v) {
-            themeNotifier.toggleTheme();
-          },
-          thumbIcon: WidgetStatePropertyAll(iconMode(context)),
+        TwenAnimationType(
+          type: AnimationType.translate,
+          direction: AnimationDirection.right,
+          child: Switch.adaptive(
+            value: context.isDarkMode,
+            activeColor: Colors.white,
+            inactiveThumbColor: Colors.white,
+            activeTrackColor: Colors.red,
+            trackOutlineColor: WidgetStatePropertyAll(Colors.transparent),
+            onChanged: (v) {
+              themeNotifier.toggleTheme();
+            },
+            thumbIcon: WidgetStatePropertyAll(iconMode(context)),
+          ),
         ),
       ],
     );

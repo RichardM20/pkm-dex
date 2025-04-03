@@ -10,6 +10,7 @@ class TwenAnimationType extends StatelessWidget {
     required this.child,
     this.type = AnimationType.scale,
     this.direction,
+    this.value = 0.05,
   }) : assert(
          type != AnimationType.translate || direction != null,
          'The "direction" is only used for the AnimationType.translate.',
@@ -18,54 +19,53 @@ class TwenAnimationType extends StatelessWidget {
   final Widget child;
   final AnimationType type;
   final AnimationDirection? direction;
+  final double value;
 
-  Tween<double> animatonTypeBegin({BuildContext? context}) {
+  Tween<double> animationTypeBegin() {
     switch (type) {
       case AnimationType.fade:
-        return Tween(begin: 0.5, end: 1.0);
+        return Tween(begin: value, end: 1.0);
       case AnimationType.scale:
-        return Tween(begin: 0.5, end: 1.0);
+        return Tween(begin: value, end: 1.0);
       case AnimationType.translate:
-        return Tween(begin: beginTrnaslate(context), end: 0);
+        return Tween(begin: 1.0, end: 0.0);
     }
   }
 
-  double beginTrnaslate(context) {
+  double calculateTranslateAmount(BuildContext context) {
     final size = MediaQuery.of(context).size;
     switch (direction) {
       case AnimationDirection.up:
-        return size.height * 0.05;
+        return size.height * value;
       case AnimationDirection.down:
-        return -size.height * 0.05;
+        return -size.height * value;
       case AnimationDirection.left:
-        return size.width * 0.05;
+        return size.width * value;
       case AnimationDirection.right:
-        return -size.width * 0.05;
+        return -size.width * value;
       default:
-        return 100;
+        return 0;
     }
   }
 
-  Offset beginTranslateOffset(context) {
-    final double translate = beginTrnaslate(context);
+  Offset getTranslateOffset(BuildContext context, double animationValue) {
+    final double amount = calculateTranslateAmount(context);
     switch (direction) {
       case AnimationDirection.up:
-        return Offset(0, translate);
       case AnimationDirection.down:
-        return Offset(0, translate);
+        return Offset(0, amount * animationValue);
       case AnimationDirection.left:
-        return Offset(translate, 0);
       case AnimationDirection.right:
-        return Offset(translate, 0);
+        return Offset(amount * animationValue, 0);
       default:
-        return Offset(0, 100);
+        return Offset.zero;
     }
   }
 
   Widget animationWidget({
     required double value,
-    Widget? child,
-    BuildContext? context,
+    required Widget child,
+    required BuildContext context,
   }) {
     switch (type) {
       case AnimationType.fade:
@@ -73,12 +73,8 @@ class TwenAnimationType extends StatelessWidget {
       case AnimationType.scale:
         return Transform.scale(scale: value, child: child);
       case AnimationType.translate:
-        final offset = beginTranslateOffset(context);
-
-        return Transform.translate(
-          offset: Offset(-value, offset.dy * value),
-          child: child,
-        );
+        final offset = getTranslateOffset(context, value);
+        return Transform.translate(offset: offset, child: child);
     }
   }
 
@@ -86,9 +82,9 @@ class TwenAnimationType extends StatelessWidget {
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 600),
-      tween: animatonTypeBegin(context: context),
+      tween: animationTypeBegin(),
       curve: Curves.easeInOut,
-      builder: (context, value, kind) {
+      builder: (context, value, _) {
         return animationWidget(child: child, context: context, value: value);
       },
     );

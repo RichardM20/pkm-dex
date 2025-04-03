@@ -1,17 +1,14 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:poke_api/src/config/api/poke_env.dart';
 import 'package:poke_api/src/models/pokemon_detail_model.dart';
 import 'package:poke_api/src/models/pokemon_model.dart';
 import 'package:poke_api/src/models/pokemon_move_details.dart';
 
 class PokeApi {
-  static final String _endPoint = 'https://pokeapi.co/api/v2';
-  static final String _pokemon = '$_endPoint/pokemon';
-  static final pkmDetail = '$_endPoint/pokemon-species';
-
   Future<Pokemon?> getPokemon({required pokemonId}) async {
-    final uri = Uri.parse('$_pokemon/$pokemonId');
+    final uri = Uri.parse('${PokeEnv.pokemon}/$pokemonId');
 
     final response = await http.get(uri);
     if (response.statusCode == 200) {
@@ -25,7 +22,7 @@ class PokeApi {
   }
 
   Future<PkmDetails?> getPokemonDetails({required pkmName}) async {
-    final uri = Uri.parse('$pkmDetail/$pkmName');
+    final uri = Uri.parse('${PokeEnv.pokemonSpecies}/$pkmName');
 
     final response = await http.get(uri);
     if (response.statusCode == 200) {
