@@ -111,6 +111,8 @@ void main() {
       ),
     );
 
+    await tester.pumpAndSettle();
+
     await tester.tap(find.byType(Switch));
     await tester.pump();
 
