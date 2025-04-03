@@ -1,8 +1,8 @@
-name: Create Release
+name: "🚀 Create Release"
 
 on:
   workflow_run:
-    workflows: ["Build APK"]
+    workflows: ["🛠️ Flutter Build"]
     types:
       - completed
     branches:
@@ -10,57 +10,74 @@ on:
 
 jobs:
   release:
-    name: Create Release
+    name: "🚀 Create GitHub Release"
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Download version info
+    - name: "📱 Send Release Stage Notification"
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        format: markdown
+        message: |
+          🚀 *Stage 3/3: Release Started*
+          📂 Repository: `${{ github.repository }}`
+          🔗 [View Progress](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+    - name: "👅 Checkout Repository"
+      uses: actions/checkout@v3
+    
+    - name: "👅 Download Version Info"
       uses: dawidd6/action-download-artifact@v2
       with:
-        workflow: build.yml
+        workflow: "🛠️ Flutter Build"
         workflow_conclusion: success
         name: build-success-marker
         path: ./
         
-    - name: Get version
+    - name: "📊 Get App Version"
       id: get_version
       run: |
         VERSION=$(cat version.txt)
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         
-    - name: Download APK from build
+    # Retrieve APK from build job
+    - name: "👅 Download APK from Build Job"
       uses: dawidd6/action-download-artifact@v2
       with:
-        workflow: build.yml
+        workflow: "🛠️ Flutter Build"
         workflow_conclusion: success
         name: release-apk
         path: apk
         
-    - name: 'Upload apk to GitHub'
+    - name: "🏷️ Create GitHub Release"
+      id: create_release
       uses: ncipollo/release-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         artifacts: "apk/app-release.apk"
         prerelease: false
+        draft: false
         tag: v${{ steps.get_version.outputs.version }}
         name: Release v${{ steps.get_version.outputs.version }}
         body: |
-          Automatically generated release by GitHub Actions
-          Application version: ${{ steps.get_version.outputs.version }}
-          > Future improvement: Extract release data from README.md
+          ## 🚀 Release v${{ steps.get_version.outputs.version }}
+          
+          ### 📱 Downloads
+          - [Download APK](https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.version }}/app-release.apk)
 
-    - name: Notify Release Result
+    - name: "📱 Send Release Results Notification"
       if: always()
-      run: |
-        if [ "${{ job.status }}" == "success" ]; then
-          STATUS="✅ *Successful Release*"
-        else
-          STATUS="❌ *Failed Release*"
-        fi
-        
-        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-        -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
-        -d "text=$STATUS%0A📂 Repository: ${{ github.repository }}%0A📂 Versión: v${{ steps.get_version.outputs.version }}%0A🔗 [Ver detalles](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
-        -d "parse_mode=Markdown"
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        format: markdown
+        message: |
+          ${{ job.status == 'success' && '✅ *Release Created Successfully*' || '❌ *Release Failed*' }}
+          📂 Repository: `${{ github.repository }}`
+          📊 Version: `v${{ steps.get_version.outputs.version }}`
+          ${{ job.status == 'success' && '🔗 [Download APK](https://github.com/' || '' }}${{ job.status == 'success' && github.repository || '' }}${{ job.status == 'success' && '/releases/download/v' || '' }}${{ job.status == 'success' && steps.get_version.outputs.version || '' }}${{ job.status == 'success' && '/app-release.apk)' || '' }}
+          ${{ job.status == 'success' && '📝 [View Release](https://github.com/' || '' }}${{ job.status == 'success' && github.repository || '' }}${{ job.status == 'success' && '/releases/tag/v' || '' }}${{ job.status == 'success' && steps.get_version.outputs.version || '' }}${{ job.status == 'success' && ')' || '' }}
